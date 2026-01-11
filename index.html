@@ -3,142 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disease Detectives: Visual History</title>
+    <title>Disease Detectives: 100 Question Marathon</title>
     <style>
         :root {
             --primary: #2c3e50;
-            --secondary: #2980b9;
-            --correct: #27ae60;
-            --wrong: #c0392b;
+            --secondary: #3498db;
+            --accent: #f1c40f;
+            --success: #27ae60;
+            --error: #c0392b;
             --bg: #f5f6fa;
+            --card: #ffffff;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg);
+            color: #333;
             margin: 0;
             padding: 20px;
-            color: #333;
+            line-height: 1.6;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: white;
-            padding: 30px;
+            background: var(--card);
+            padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border-top: 6px solid var(--primary);
         }
 
         header {
             text-align: center;
             border-bottom: 2px solid #eee;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
         }
 
-        h1 { margin: 0; color: var(--primary); }
-        .score-board { font-size: 1.2rem; font-weight: bold; color: var(--secondary); margin-top: 10px; }
+        h1 { margin: 0; color: var(--primary); font-size: 2.2rem; }
+        .subtitle { color: #7f8c8d; margin-top: 5px; }
 
-        .question-box {
-            background: #fff;
-            padding: 20px;
-        }
-
-        .q-type {
-            display: inline-block;
+        /* Progress Bar */
+        .progress-container {
             background: #eee;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--secondary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
             font-weight: bold;
             color: #555;
-            margin-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        /* Question Area */
+        .question-box {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .category-tag {
+            display: inline-block;
+            background: #e8f4fd;
+            color: var(--secondary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
             text-transform: uppercase;
+            margin-bottom: 15px;
         }
 
-        .prompt-text {
+        .question-text {
             font-size: 1.3rem;
-            margin-bottom: 20px;
             font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--primary);
         }
 
-        /* Image Styling */
-        .visual-container {
-            display: flex;
-            gap: 20px;
+        .clue-box {
             background: #f8f9fa;
+            border-left: 5px solid var(--secondary);
             padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            margin-bottom: 20px;
-            align-items: center;
-        }
-        
-        .visual-img {
-            width: 150px;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            background-color: #e0e0e0;
+            margin-bottom: 25px;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #444;
         }
 
-        .visual-clues {
-            flex: 1;
-        }
-
-        /* Buttons */
+        /* Options */
         .options-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .opt-btn {
-            background: white;
-            border: 2px solid #ddd;
-            padding: 15px;
-            text-align: left;
+        .option-btn {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            padding: 15px 20px;
             border-radius: 8px;
-            cursor: pointer;
+            text-align: left;
             font-size: 1rem;
+            cursor: pointer;
             transition: all 0.2s;
+            color: #333;
         }
 
-        .opt-btn:hover:not(:disabled) {
+        .option-btn:hover:not(:disabled) {
             border-color: var(--secondary);
             background: #f0f8ff;
+            transform: translateX(5px);
         }
 
-        .opt-btn.correct { background: #d5f5e3; border-color: var(--correct); color: #006400; }
-        .opt-btn.wrong { background: #fadbd8; border-color: var(--wrong); color: #8b0000; }
+        .option-btn.correct {
+            background: #d4edda;
+            border-color: var(--success);
+            color: #155724;
+        }
 
+        .option-btn.wrong {
+            background: #fadbd8;
+            border-color: var(--error);
+            color: #721c24;
+            opacity: 0.7;
+        }
+
+        .option-btn:disabled { cursor: default; transform: none; }
+
+        /* Feedback */
         .feedback {
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: 25px;
+            padding: 20px;
             border-radius: 8px;
             display: none;
         }
-        .feedback.correct { background: #e8f8f5; border-left: 5px solid var(--correct); }
-        .feedback.wrong { background: #fdedec; border-left: 5px solid var(--wrong); }
+        .feedback.correct { background: #e8f5e9; border-left: 5px solid var(--success); }
+        .feedback.wrong { background: #fce4ec; border-left: 5px solid var(--error); }
 
-        .next-btn {
+        .btn-next {
             display: none;
-            float: right;
+            margin-top: 20px;
+            padding: 12px 35px;
             background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 30px;
-            border-radius: 20px;
+            border-radius: 30px;
+            font-size: 1.1rem;
             cursor: pointer;
-            font-size: 1rem;
-            margin-top: 15px;
+            float: right;
+            transition: background 0.2s;
         }
+        .btn-next:hover { background: #34495e; }
 
-        /* Mobile */
-        @media(max-width: 600px) {
-            .visual-container { flex-direction: column; text-align: center; }
+        /* End Screen */
+        .results-container {
+            text-align: center;
+            display: none;
+        }
+        .final-score {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 20px 0;
         }
     </style>
 </head>
@@ -147,241 +189,256 @@
 <div class="container">
     <header>
         <h1>Epidemiology Hall of Fame</h1>
-        <div class="score-board">Score: <span id="score">0</span> / <span id="total">0</span></div>
+        <div class="subtitle">100 Question Marathon</div>
     </header>
 
-    <div id="game-area">
+    <div id="quiz-ui">
+        <div class="progress-container">
+            <div class="progress-fill" id="progress-bar"></div>
         </div>
+        <div class="stats">
+            <span id="q-count">Question 1 of 100</span>
+            <span id="score-display">Score: 0</span>
+        </div>
+
+        <div id="question-area" class="question-box">
+            </div>
+    </div>
+
+    <div id="results-ui" class="results-container">
+        <h2>Marathon Complete!</h2>
+        <p>You survived 100 questions of epidemiological history.</p>
+        <div class="final-score" id="final-score"></div>
+        <p id="final-msg"></p>
+        <button class="btn-next" style="display:inline-block; float:none;" onclick="location.reload()">Restart Quiz</button>
+    </div>
 </div>
 
 <script>
-    // --- ROBUST DATABASE ---
-    // If an image fails to load, the 'onerror' in the HTML will handle it.
+    // --- DATABASE ---
     const figures = [
-        { 
-            name: "Hippocrates", 
-            desc: "First to suggest environmental factors (air, water, place) influence health.", 
-            dates: "c. 460 – c. 370 BC",
-            img: "https://upload.wikimedia.org/wikipedia/commons/f/f2/Bust_of_Hippocrates_%28cropped%29.jpg"
-        },
-        { 
-            name: "John Snow", 
-            desc: "Father of Field Epidemiology. Mapped cholera to the Broad Street pump.", 
-            dates: "1813 – 1858",
-            img: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Dr_John_Snow_by_Barker_BW_1847.jpg"
-        },
-        { 
-            name: "Edward Jenner", 
-            desc: "Father of Immunology. Developed the smallpox vaccine using cowpox.", 
-            dates: "1749 – 1823",
-            img: "https://upload.wikimedia.org/wikipedia/commons/c/cd/Portrait_of_Edward_Jenner%2C_circa_1803_Wellcome_M0004456.jpg"
-        },
-        { 
-            name: "Florence Nightingale", 
-            desc: "Used polar area charts to show sanitation killed more soldiers than battle.", 
-            dates: "1820 – 1910",
-            img: "https://upload.wikimedia.org/wikipedia/commons/1/14/Florence_Nightingale_CDV_by_H_Lenthall.jpg"
-        },
-        { 
-            name: "Louis Pasteur", 
-            desc: "Proved Germ Theory; developed vaccines for rabies and anthrax.", 
-            dates: "1822 – 1895",
-            img: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Albert_Edelfelt_-_Louis_Pasteur_-_Google_Art_Project.jpg"
-        },
-        { 
-            name: "Robert Koch", 
-            desc: "Identified agents of TB and Cholera; created postulates for causation.", 
-            dates: "1843 – 1910",
-            img: "https://upload.wikimedia.org/wikipedia/commons/0/05/Robert_Koch_NIP.jpg"
-        },
-        { 
-            name: "Ignaz Semmelweis", 
-            desc: "Pioneered handwashing to prevent puerperal (childbed) fever.", 
-            dates: "1818 – 1865",
-            img: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Ignaz_Semmelweis_%281818-1865%29_in_1864.jpg"
-        },
-        { 
-            name: "Joseph Goldberger", 
-            desc: "Proved pellagra was a nutritional deficiency (niacin), not infectious.", 
-            dates: "1874 – 1929",
-            img: "https://upload.wikimedia.org/wikipedia/commons/a/ad/Joseph_Goldberger.jpg"
-        },
-        { 
-            name: "Walter Reed", 
-            desc: "Confirmed yellow fever is transmitted by mosquitoes.", 
-            dates: "1851 – 1902",
-            img: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Walter_reed_photo.jpg"
-        },
-        { 
-            name: "Alice Hamilton", 
-            desc: "Founder of occupational epidemiology (lead/chemical poisoning).", 
-            dates: "1869 – 1970",
-            img: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Alice_Hamilton_student_portrait%2C_ca._1893_-_HS10419_%28cropped%29.jpg"
-        },
-        { 
-            name: "Alexander Fleming", 
-            desc: "Discovered penicillin, starting the antibiotic era.", 
-            dates: "1881 – 1955",
-            img: "https://upload.wikimedia.org/wikipedia/commons/b/bf/Alexander_Fleming_at_his_desk_in_a_white_lab_coat_with_penicillin_mold_in_petrie_dishes_around_him.jpg"
-        },
-        { 
-            name: "William Farr", 
-            desc: "Formalized vital statistics and disease surveillance systems.", 
-            dates: "1807 – 1883",
-            img: "https://upload.wikimedia.org/wikipedia/commons/a/a2/William_Farr._Photograph_by_Ernest_Edwards%2C_1867._Wellcome_V0026331.jpg"
-        },
-        { 
-            name: "Jonas Salk", 
-            desc: "Developed the Inactivated Polio Vaccine (IPV).", 
-            dates: "1914 – 1995",
-            img: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Jonas_Salk_1988.jpg"
-        },
-        { 
-            name: "Mary Mallon", 
-            desc: "First identified asymptomatic carrier of typhoid in the US.", 
-            dates: "1869 – 1938",
-            img: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Mary_Mallon_in_hospital_bed.jpg"
-        }
+        { name: "Hippocrates", desc: "First to dismiss supernatural explanations; wrote 'On Airs, Waters, and Places'.", title: "Father of Medicine" },
+        { name: "John Graunt", desc: "Analyzed the 'Bills of Mortality' in London; quantified patterns of birth/death.", title: "Founder of Demography" },
+        { name: "James Lind", desc: "Conducted the first controlled clinical trial (scurvy) on HMS Salisbury.", title: "" },
+        { name: "Edward Jenner", desc: "Developed the smallpox vaccine using cowpox material.", title: "Father of Immunology" },
+        { name: "William Farr", desc: "Formalized vital statistics system; classified causes of death.", title: "Father of Surveillance" },
+        { name: "John Snow", desc: "Mapped cholera to the Broad Street pump; removed the handle.", title: "Father of Field Epidemiology" },
+        { name: "Ignaz Semmelweis", desc: "Discovered handwashing reduced puerperal (childbed) fever mortality.", title: "Savior of Mothers" },
+        { name: "Florence Nightingale", desc: "Used polar area diagrams to show sanitation killed more soldiers than battle.", title: "Lady with the Lamp" },
+        { name: "Louis Pasteur", desc: "Proved Germ Theory; developed rabies and anthrax vaccines.", title: "Father of Microbiology" },
+        { name: "Robert Koch", desc: "Identified agents of TB/Cholera; developed postulates for causation.", title: "Father of Bacteriology" },
+        { name: "Joseph Lister", desc: "Pioneer of antiseptic surgery; used carbolic acid.", title: "Father of Antiseptic Surgery" },
+        { name: "Rudolf Virchow", desc: "Stated 'Medicine is a social science'; linked disease to poverty.", title: "Father of Modern Pathology" },
+        { name: "Walter Reed", desc: "Confirmed yellow fever is transmitted by Aedes aegypti mosquitoes.", title: "" },
+        { name: "Alice Hamilton", desc: "Pioneer in occupational epidemiology (lead/chemical poisoning).", title: "Founder of Occupational Medicine" },
+        { name: "Mary Mallon", desc: "First identified asymptomatic carrier of typhoid fever in the US.", title: "Typhoid Mary" },
+        { name: "George Soper", desc: "Sanitation engineer who tracked down Mary Mallon.", title: "" },
+        { name: "Joseph Goldberger", desc: "Proved pellagra was a nutritional deficiency (niacin), not infectious.", title: "" },
+        { name: "Christiaan Eijkman", desc: "Discovered beriberi was caused by nutritional deficiency (thiamine).", title: "" },
+        { name: "Janet Lane-Claypon", desc: "Pioneered the case-control study (breast cancer); early use of t-test.", title: "" },
+        { name: "Alexander Fleming", desc: "Discovered penicillin in 1928, launching the antibiotic era.", title: "" },
+        { name: "Edgar Sydenstricker", desc: "Pioneered morbidity statistics (illness) rather than just mortality.", title: "" },
+        { name: "Wade Hampton Frost", desc: "First professor of epidemiology in US; developed cohort analysis.", title: "" },
+        { name: "John Enders", desc: "Cultured poliovirus in non-nervous tissue; enabled vaccine creation.", title: "Father of Modern Vaccines" },
+        { name: "Jonas Salk", desc: "Developed the Inactivated Polio Vaccine (IPV).", title: "" },
+        { name: "Albert Sabin", desc: "Developed the Oral Polio Vaccine (OPV).", title: "" },
+        { name: "Austin Bradford Hill", desc: "Formalized the Randomized Clinical Trial (RCT) and causal criteria.", title: "" },
+        { name: "Richard Doll", desc: "Collaborated with Hill to prove smoking causes lung cancer.", title: "" },
+        { name: "Alexander Langmuir", desc: "Founded the Epidemic Intelligence Service (EIS) at CDC.", title: "Father of EIS" },
+        { name: "D.A. Henderson", desc: "Directed the WHO Global Smallpox Eradication Campaign.", title: "" },
+        { name: "William H. Foege", desc: "Devised 'surveillance and containment' (ring vaccination) strategy.", title: "" },
+        { name: "Michael Marmot", desc: "Led Whitehall Studies on social determinants of health (social gradient).", title: "" },
+        { name: "Geoffrey Rose", desc: "Wrote 'Sick Individuals and Sick Populations'; population strategy.", title: "" },
+        { name: "Percivall Pott", desc: "Linked soot exposure to scrotal cancer in chimney sweeps.", title: "" },
+        { name: "Lady Mary Wortley Montagu", desc: "Introduced variolation (smallpox inoculation) to Britain.", title: "" },
+        { name: "Lemuel Shattuck", desc: "Authored 1850 Report laying groundwork for US public health system.", title: "" },
+        { name: "Thomas Sydenham", desc: "English Hippocrates; emphasized observation and disease classification.", title: "" },
+        { name: "Peter Piot", desc: "Co-discovered Ebola; founding director of UNAIDS.", title: "" }
     ];
 
-    // --- GAME ENGINE ---
+    // --- GAME LOGIC ---
+    let questions = [];
+    let currentQ = 0;
     let score = 0;
-    let qCount = 0;
-    const MAX_Q = 15;
 
-    function init() {
-        score = 0;
-        qCount = 0;
-        loadQ();
-    }
-
-    function loadQ() {
-        if (qCount >= MAX_Q) {
-            showResults();
-            return;
-        }
+    // Generate 100 Questions
+    function generateDeck() {
+        let deck = [];
         
-        qCount++;
-        document.getElementById('total').innerText = qCount;
-        document.getElementById('score').innerText = score;
+        // Pass 1: Description -> Name (One for everyone)
+        figures.forEach(f => {
+            deck.push(createQ_DescToName(f));
+        });
 
-        // Randomize Type: 0=Desc->Name, 1=Name->Desc, 2=Image->Name
-        const type = Math.floor(Math.random() * 3);
-        const item = figures[Math.floor(Math.random() * figures.length)];
-        const distractors = getDistractors(item);
-        const options = shuffle([item, ...distractors]);
+        // Pass 2: Name -> Contribution (One for everyone)
+        figures.forEach(f => {
+            deck.push(createQ_NameToDesc(f));
+        });
 
-        let html = '';
+        // Pass 3: Title/Specifics (Fill the rest)
+        figures.forEach(f => {
+            if (f.title) {
+                deck.push(createQ_TitleToName(f));
+            }
+        });
 
-        if (type === 0) {
-            // Desc -> Name
-            html = `
-                <div class="q-type">Type: Identification</div>
-                <div class="prompt-text">Who is known for the following?</div>
-                <div style="font-style:italic; background:#f4f4f4; padding:15px; border-left:4px solid var(--secondary); margin-bottom:20px;">
-                    "${item.desc}"
-                </div>
-                <div class="options-grid">
-                    ${renderOptions(options, item, 'name')}
-                </div>
-            `;
-        } else if (type === 1) {
-            // Name -> Desc
-            html = `
-                <div class="q-type">Type: Contribution</div>
-                <div class="prompt-text">What was <strong>${item.name}'s</strong> major contribution?</div>
-                <div class="options-grid">
-                    ${renderOptions(options, item, 'desc')}
-                </div>
-            `;
-        } else {
-            // Image -> Name
-            html = `
-                <div class="q-type">Type: Visual ID</div>
-                <div class="prompt-text">Identify this individual:</div>
-                <div class="visual-container">
-                    <img src="${item.img}" 
-                         class="visual-img" 
-                         alt="History Figure" 
-                         onerror="this.onerror=null;this.src='https://placehold.co/150x180?text=${item.name.replace(' ','+')}'">
-                    <div class="visual-clues">
-                        <div><strong>Lived:</strong> ${item.dates}</div>
-                        <div style="margin-top:5px; font-size:0.9em; color:#666;">(Look closely at the image and timeline)</div>
-                    </div>
-                </div>
-                <div class="options-grid">
-                    ${renderOptions(options, item, 'name')}
-                </div>
-            `;
+        // If we don't have 100 yet, add random repeats of hard ones
+        while (deck.length < 100) {
+            let r = figures[Math.floor(Math.random() * figures.length)];
+            if (Math.random() > 0.5) deck.push(createQ_DescToName(r));
+            else deck.push(createQ_NameToDesc(r));
         }
 
-        html += `<div id="feedback" class="feedback"></div>`;
-        html += `<button id="nextBtn" class="next-btn" onclick="loadQ()">Next Question</button>`;
-
-        document.getElementById('game-area').innerHTML = html;
+        // Shuffle
+        questions = shuffle(deck).slice(0, 100);
     }
 
-    function renderOptions(opts, correctItem, field) {
-        return opts.map(opt => `
-            <button class="opt-btn" onclick="check(this, '${opt[field] === correctItem[field]}', '${correctItem.name}')">
-                ${opt[field]}
-            </button>
-        `).join('');
+    function createQ_DescToName(item) {
+        let distractors = getDistractors(item.name);
+        return {
+            category: "Who is this?",
+            text: `Which individual is known for the following contribution?`,
+            clue: item.desc,
+            options: shuffle([item.name, ...distractors]),
+            correct: item.name,
+            explanation: `Correct! <strong>${item.name}</strong> is the answer.`
+        };
     }
 
-    function check(btn, isCorrect, correctName) {
-        // Disable all
-        const btns = document.querySelectorAll('.opt-btn');
-        btns.forEach(b => b.disabled = true);
-
-        const feedback = document.getElementById('feedback');
-        const nextBtn = document.getElementById('nextBtn');
-        isCorrect = (isCorrect === 'true');
-
-        if (isCorrect) {
-            score++;
-            btn.classList.add('correct');
-            feedback.className = 'feedback correct';
-            feedback.innerHTML = "<strong>Correct!</strong> Great job.";
-        } else {
-            btn.classList.add('wrong');
-            feedback.className = 'feedback wrong';
-            feedback.innerHTML = `<strong>Incorrect.</strong> The answer was ${correctName}.`;
-            // Highlight correct
-            btns.forEach(b => {
-                if (b.innerText.includes(correctName) || (b.innerText.length > 20 && correctName === 'check_desc_logic')) {
-                    b.classList.add('correct'); // Simple highlight
-                }
-            });
+    function createQ_NameToDesc(item) {
+        // Get distractor descriptions
+        let distractors = [];
+        while(distractors.length < 3) {
+            let r = figures[Math.floor(Math.random() * figures.length)];
+            if (r.name !== item.name && !distractors.includes(r.desc)) {
+                distractors.push(r.desc);
+            }
         }
-        
-        document.getElementById('score').innerText = score;
-        feedback.style.display = 'block';
-        nextBtn.style.display = 'block';
+        return {
+            category: "What did they do?",
+            text: `What is the major contribution of <strong>${item.name}</strong>?`,
+            clue: null, // No clue box, prompt is the clue
+            options: shuffle([item.desc, ...distractors]),
+            correct: item.desc,
+            explanation: `Correct! ${item.name} is famous for: ${item.desc}`
+        };
     }
 
-    function getDistractors(correctItem) {
-        let pool = figures.filter(f => f.name !== correctItem.name);
-        pool = shuffle(pool);
-        return pool.slice(0, 3);
+    function createQ_TitleToName(item) {
+        let distractors = getDistractors(item.name);
+        return {
+            category: "Titles & Nicknames",
+            text: `Which individual is often referred to as the <strong>"${item.title}"</strong>?`,
+            clue: null,
+            options: shuffle([item.name, ...distractors]),
+            correct: item.name,
+            explanation: `Correct! <strong>${item.name}</strong> holds this title.`
+        };
+    }
+
+    function getDistractors(correctName) {
+        let d = [];
+        while(d.length < 3) {
+            let r = figures[Math.floor(Math.random() * figures.length)];
+            if (r.name !== correctName && !d.includes(r.name)) {
+                d.push(r.name);
+            }
+        }
+        return d;
     }
 
     function shuffle(array) {
         return array.sort(() => Math.random() - 0.5);
     }
 
-    function showResults() {
-        document.getElementById('game-area').innerHTML = `
-            <div style="text-align:center; padding:40px;">
-                <h2 style="color:var(--secondary)">Quiz Complete!</h2>
-                <div style="font-size:3rem; margin:20px 0; color:var(--primary); font-weight:bold;">${score} / ${MAX_Q}</div>
-                <button class="next-btn" style="display:inline-block; float:none;" onclick="init()">Restart</button>
-            </div>
-        `;
+    // --- UI FUNCTIONS ---
+    function loadQuestion() {
+        if (currentQ >= questions.length) {
+            endGame();
+            return;
+        }
+
+        const q = questions[currentQ];
+        
+        // Update Stats
+        document.getElementById('q-count').innerText = `Question ${currentQ + 1} of ${questions.length}`;
+        document.getElementById('score-display').innerText = `Score: ${score}`;
+        document.getElementById('progress-bar').style.width = `${((currentQ) / questions.length) * 100}%`;
+
+        // Build HTML
+        let html = `<div class="category-tag">${q.category}</div>`;
+        html += `<div class="question-text">${q.text}</div>`;
+        
+        if (q.clue) {
+            html += `<div class="clue-box">"${q.clue}"</div>`;
+        }
+
+        html += `<div class="options-grid">`;
+        q.options.forEach(opt => {
+            // Escape quotes for onclick
+            let safeOpt = opt.replace(/'/g, "\\'");
+            let safeCorrect = q.correct.replace(/'/g, "\\'");
+            html += `<button class="option-btn" onclick="checkAnswer(this, '${safeOpt}', '${safeCorrect}')">${opt}</button>`;
+        });
+        html += `</div>`;
+        
+        html += `<div id="feedback" class="feedback"></div>`;
+        html += `<button id="next-btn" class="btn-next" onclick="nextQuestion()">Next Question</button>`;
+
+        document.getElementById('question-area').innerHTML = html;
+    }
+
+    let isAnswered = false;
+
+    window.checkAnswer = function(btn, selected, correct) {
+        if (isAnswered) return;
+        isAnswered = true;
+
+        const feedback = document.getElementById('feedback');
+        const nextBtn = document.getElementById('next-btn');
+        const btns = document.querySelectorAll('.option-btn');
+
+        if (selected === correct) {
+            score++;
+            btn.classList.add('correct');
+            feedback.className = 'feedback correct';
+            feedback.innerHTML = `<strong>Correct!</strong>`;
+        } else {
+            btn.classList.add('wrong');
+            feedback.className = 'feedback wrong';
+            feedback.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <br>${correct}`;
+            
+            // Highlight correct button
+            btns.forEach(b => {
+                if (b.innerText === correct) b.classList.add('correct');
+            });
+        }
+
+        feedback.style.display = 'block';
+        nextBtn.style.display = 'block';
+    }
+
+    window.nextQuestion = function() {
+        isAnswered = false;
+        currentQ++;
+        loadQuestion();
+    }
+
+    function endGame() {
+        document.getElementById('quiz-ui').style.display = 'none';
+        document.getElementById('results-ui').style.display = 'block';
+        document.getElementById('final-score').innerText = `${score} / 100`;
+
+        let msg = "";
+        if (score >= 90) msg = "Master Epidemiologist status achieved!";
+        else if (score >= 70) msg = "Great work! You know your history.";
+        else msg = "Good practice. Keep reviewing!";
+        document.getElementById('final-msg').innerText = msg;
     }
 
     // Start
-    init();
+    generateDeck();
+    loadQuestion();
 
 </script>
 
