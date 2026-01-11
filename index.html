@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disease Detectives: 100 Question Marathon</title>
+    <title>Disease Detectives: Extended History Marathon</title>
     <style>
         :root {
             --primary: #2c3e50;
-            --secondary: #3498db;
+            --secondary: #2980b9;
             --accent: #f1c40f;
             --success: #27ae60;
             --error: #c0392b;
-            --bg: #f5f6fa;
+            --bg: #fdfefe;
             --card: #ffffff;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
             background-color: var(--bg);
             color: #333;
             margin: 0;
@@ -25,55 +25,55 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: var(--card);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            border-top: 6px solid var(--primary);
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border-top: 8px solid var(--primary);
         }
 
         header {
             text-align: center;
-            border-bottom: 2px solid #eee;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
         }
 
-        h1 { margin: 0; color: var(--primary); font-size: 2.2rem; }
-        .subtitle { color: #7f8c8d; margin-top: 5px; }
+        h1 { margin: 0; color: var(--primary); font-size: 2.4rem; }
+        .subtitle { color: #7f8c8d; margin-top: 10px; font-size: 1.1rem; }
 
-        /* Progress Bar */
+        /* Stats & Progress */
         .progress-container {
             background: #eee;
-            height: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
+            height: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
             overflow: hidden;
         }
         .progress-fill {
             height: 100%;
-            background: var(--secondary);
+            background: linear-gradient(90deg, var(--secondary), #3498db);
             width: 0%;
             transition: width 0.3s ease;
         }
         .stats {
             display: flex;
             justify-content: space-between;
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: bold;
             color: #555;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
-        /* Question Area */
+        /* Question Styles */
         .question-box {
-            animation: fadeIn 0.3s ease-in-out;
+            animation: slideUp 0.4s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -81,54 +81,59 @@
             display: inline-block;
             background: #e8f4fd;
             color: var(--secondary);
-            padding: 4px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: bold;
             text-transform: uppercase;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
         }
 
         .question-text {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 600;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             color: var(--primary);
         }
 
         .clue-box {
             background: #f8f9fa;
-            border-left: 5px solid var(--secondary);
-            padding: 20px;
-            margin-bottom: 25px;
+            border-left: 6px solid var(--secondary);
+            padding: 25px;
+            margin-bottom: 35px;
             font-style: italic;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: #444;
+            line-height: 1.8;
+            border-radius: 0 8px 8px 0;
         }
 
         /* Options */
         .options-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 12px;
+            gap: 15px;
         }
 
         .option-btn {
             background: #fff;
             border: 2px solid #e0e0e0;
-            padding: 15px 20px;
-            border-radius: 8px;
+            padding: 18px 25px;
+            border-radius: 10px;
             text-align: left;
-            font-size: 1rem;
+            font-size: 1.05rem;
             cursor: pointer;
             transition: all 0.2s;
-            color: #333;
+            color: #2c3e50;
+            position: relative;
         }
 
         .option-btn:hover:not(:disabled) {
             border-color: var(--secondary);
-            background: #f0f8ff;
-            transform: translateX(5px);
+            background: #f4faff;
+            transform: translateX(8px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         .option-btn.correct {
@@ -141,25 +146,26 @@
             background: #fadbd8;
             border-color: var(--error);
             color: #721c24;
-            opacity: 0.7;
+            opacity: 0.6;
         }
 
-        .option-btn:disabled { cursor: default; transform: none; }
+        .option-btn:disabled { cursor: default; transform: none; box-shadow: none; }
 
         /* Feedback */
         .feedback {
-            margin-top: 25px;
-            padding: 20px;
-            border-radius: 8px;
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 10px;
             display: none;
+            font-size: 1.1rem;
         }
-        .feedback.correct { background: #e8f5e9; border-left: 5px solid var(--success); }
-        .feedback.wrong { background: #fce4ec; border-left: 5px solid var(--error); }
+        .feedback.correct { background: #e8f5e9; border-left: 6px solid var(--success); }
+        .feedback.wrong { background: #fce4ec; border-left: 6px solid var(--error); }
 
         .btn-next {
             display: none;
-            margin-top: 20px;
-            padding: 12px 35px;
+            margin-top: 25px;
+            padding: 15px 40px;
             background: var(--primary);
             color: white;
             border: none;
@@ -168,6 +174,7 @@
             cursor: pointer;
             float: right;
             transition: background 0.2s;
+            font-weight: bold;
         }
         .btn-next:hover { background: #34495e; }
 
@@ -175,10 +182,11 @@
         .results-container {
             text-align: center;
             display: none;
+            padding: 40px 0;
         }
         .final-score {
-            font-size: 4rem;
-            font-weight: bold;
+            font-size: 5rem;
+            font-weight: 800;
             color: var(--primary);
             margin: 20px 0;
         }
@@ -189,7 +197,7 @@
 <div class="container">
     <header>
         <h1>Epidemiology Hall of Fame</h1>
-        <div class="subtitle">100 Question Marathon</div>
+        <div class="subtitle">100 Question Marathon with In-Depth Clues</div>
     </header>
 
     <div id="quiz-ui">
@@ -207,240 +215,143 @@
 
     <div id="results-ui" class="results-container">
         <h2>Marathon Complete!</h2>
-        <p>You survived 100 questions of epidemiological history.</p>
+        <p style="font-size:1.2rem;">You have navigated the history of public health.</p>
         <div class="final-score" id="final-score"></div>
-        <p id="final-msg"></p>
+        <p id="final-msg" style="font-size:1.3rem; color:#666;"></p>
         <button class="btn-next" style="display:inline-block; float:none;" onclick="location.reload()">Restart Quiz</button>
     </div>
 </div>
 
 <script>
-    // --- DATABASE ---
+    // --- DATABASE WITH EXTENDED DESCRIPTIONS ---
+    // 'desc': Short version for answer buttons
+    // 'long_desc': Detailed version for the clue/question text
+    
     const figures = [
-        { name: "Hippocrates", desc: "First to dismiss supernatural explanations; wrote 'On Airs, Waters, and Places'.", title: "Father of Medicine" },
-        { name: "John Graunt", desc: "Analyzed the 'Bills of Mortality' in London; quantified patterns of birth/death.", title: "Founder of Demography" },
-        { name: "James Lind", desc: "Conducted the first controlled clinical trial (scurvy) on HMS Salisbury.", title: "" },
-        { name: "Edward Jenner", desc: "Developed the smallpox vaccine using cowpox material.", title: "Father of Immunology" },
-        { name: "William Farr", desc: "Formalized vital statistics system; classified causes of death.", title: "Father of Surveillance" },
-        { name: "John Snow", desc: "Mapped cholera to the Broad Street pump; removed the handle.", title: "Father of Field Epidemiology" },
-        { name: "Ignaz Semmelweis", desc: "Discovered handwashing reduced puerperal (childbed) fever mortality.", title: "Savior of Mothers" },
-        { name: "Florence Nightingale", desc: "Used polar area diagrams to show sanitation killed more soldiers than battle.", title: "Lady with the Lamp" },
-        { name: "Louis Pasteur", desc: "Proved Germ Theory; developed rabies and anthrax vaccines.", title: "Father of Microbiology" },
-        { name: "Robert Koch", desc: "Identified agents of TB/Cholera; developed postulates for causation.", title: "Father of Bacteriology" },
-        { name: "Joseph Lister", desc: "Pioneer of antiseptic surgery; used carbolic acid.", title: "Father of Antiseptic Surgery" },
-        { name: "Rudolf Virchow", desc: "Stated 'Medicine is a social science'; linked disease to poverty.", title: "Father of Modern Pathology" },
-        { name: "Walter Reed", desc: "Confirmed yellow fever is transmitted by Aedes aegypti mosquitoes.", title: "" },
-        { name: "Alice Hamilton", desc: "Pioneer in occupational epidemiology (lead/chemical poisoning).", title: "Founder of Occupational Medicine" },
-        { name: "Mary Mallon", desc: "First identified asymptomatic carrier of typhoid fever in the US.", title: "Typhoid Mary" },
-        { name: "George Soper", desc: "Sanitation engineer who tracked down Mary Mallon.", title: "" },
-        { name: "Joseph Goldberger", desc: "Proved pellagra was a nutritional deficiency (niacin), not infectious.", title: "" },
-        { name: "Christiaan Eijkman", desc: "Discovered beriberi was caused by nutritional deficiency (thiamine).", title: "" },
-        { name: "Janet Lane-Claypon", desc: "Pioneered the case-control study (breast cancer); early use of t-test.", title: "" },
-        { name: "Alexander Fleming", desc: "Discovered penicillin in 1928, launching the antibiotic era.", title: "" },
-        { name: "Edgar Sydenstricker", desc: "Pioneered morbidity statistics (illness) rather than just mortality.", title: "" },
-        { name: "Wade Hampton Frost", desc: "First professor of epidemiology in US; developed cohort analysis.", title: "" },
-        { name: "John Enders", desc: "Cultured poliovirus in non-nervous tissue; enabled vaccine creation.", title: "Father of Modern Vaccines" },
-        { name: "Jonas Salk", desc: "Developed the Inactivated Polio Vaccine (IPV).", title: "" },
-        { name: "Albert Sabin", desc: "Developed the Oral Polio Vaccine (OPV).", title: "" },
-        { name: "Austin Bradford Hill", desc: "Formalized the Randomized Clinical Trial (RCT) and causal criteria.", title: "" },
-        { name: "Richard Doll", desc: "Collaborated with Hill to prove smoking causes lung cancer.", title: "" },
-        { name: "Alexander Langmuir", desc: "Founded the Epidemic Intelligence Service (EIS) at CDC.", title: "Father of EIS" },
-        { name: "D.A. Henderson", desc: "Directed the WHO Global Smallpox Eradication Campaign.", title: "" },
-        { name: "William H. Foege", desc: "Devised 'surveillance and containment' (ring vaccination) strategy.", title: "" },
-        { name: "Michael Marmot", desc: "Led Whitehall Studies on social determinants of health (social gradient).", title: "" },
-        { name: "Geoffrey Rose", desc: "Wrote 'Sick Individuals and Sick Populations'; population strategy.", title: "" },
-        { name: "Percivall Pott", desc: "Linked soot exposure to scrotal cancer in chimney sweeps.", title: "" },
-        { name: "Lady Mary Wortley Montagu", desc: "Introduced variolation (smallpox inoculation) to Britain.", title: "" },
-        { name: "Lemuel Shattuck", desc: "Authored 1850 Report laying groundwork for US public health system.", title: "" },
-        { name: "Thomas Sydenham", desc: "English Hippocrates; emphasized observation and disease classification.", title: "" },
-        { name: "Peter Piot", desc: "Co-discovered Ebola; founding director of UNAIDS.", title: "" }
-    ];
-
-    // --- GAME LOGIC ---
-    let questions = [];
-    let currentQ = 0;
-    let score = 0;
-
-    // Generate 100 Questions
-    function generateDeck() {
-        let deck = [];
-        
-        // Pass 1: Description -> Name (One for everyone)
-        figures.forEach(f => {
-            deck.push(createQ_DescToName(f));
-        });
-
-        // Pass 2: Name -> Contribution (One for everyone)
-        figures.forEach(f => {
-            deck.push(createQ_NameToDesc(f));
-        });
-
-        // Pass 3: Title/Specifics (Fill the rest)
-        figures.forEach(f => {
-            if (f.title) {
-                deck.push(createQ_TitleToName(f));
-            }
-        });
-
-        // If we don't have 100 yet, add random repeats of hard ones
-        while (deck.length < 100) {
-            let r = figures[Math.floor(Math.random() * figures.length)];
-            if (Math.random() > 0.5) deck.push(createQ_DescToName(r));
-            else deck.push(createQ_NameToDesc(r));
-        }
-
-        // Shuffle
-        questions = shuffle(deck).slice(0, 100);
-    }
-
-    function createQ_DescToName(item) {
-        let distractors = getDistractors(item.name);
-        return {
-            category: "Who is this?",
-            text: `Which individual is known for the following contribution?`,
-            clue: item.desc,
-            options: shuffle([item.name, ...distractors]),
-            correct: item.name,
-            explanation: `Correct! <strong>${item.name}</strong> is the answer.`
-        };
-    }
-
-    function createQ_NameToDesc(item) {
-        // Get distractor descriptions
-        let distractors = [];
-        while(distractors.length < 3) {
-            let r = figures[Math.floor(Math.random() * figures.length)];
-            if (r.name !== item.name && !distractors.includes(r.desc)) {
-                distractors.push(r.desc);
-            }
-        }
-        return {
-            category: "What did they do?",
-            text: `What is the major contribution of <strong>${item.name}</strong>?`,
-            clue: null, // No clue box, prompt is the clue
-            options: shuffle([item.desc, ...distractors]),
-            correct: item.desc,
-            explanation: `Correct! ${item.name} is famous for: ${item.desc}`
-        };
-    }
-
-    function createQ_TitleToName(item) {
-        let distractors = getDistractors(item.name);
-        return {
-            category: "Titles & Nicknames",
-            text: `Which individual is often referred to as the <strong>"${item.title}"</strong>?`,
-            clue: null,
-            options: shuffle([item.name, ...distractors]),
-            correct: item.name,
-            explanation: `Correct! <strong>${item.name}</strong> holds this title.`
-        };
-    }
-
-    function getDistractors(correctName) {
-        let d = [];
-        while(d.length < 3) {
-            let r = figures[Math.floor(Math.random() * figures.length)];
-            if (r.name !== correctName && !d.includes(r.name)) {
-                d.push(r.name);
-            }
-        }
-        return d;
-    }
-
-    function shuffle(array) {
-        return array.sort(() => Math.random() - 0.5);
-    }
-
-    // --- UI FUNCTIONS ---
-    function loadQuestion() {
-        if (currentQ >= questions.length) {
-            endGame();
-            return;
-        }
-
-        const q = questions[currentQ];
-        
-        // Update Stats
-        document.getElementById('q-count').innerText = `Question ${currentQ + 1} of ${questions.length}`;
-        document.getElementById('score-display').innerText = `Score: ${score}`;
-        document.getElementById('progress-bar').style.width = `${((currentQ) / questions.length) * 100}%`;
-
-        // Build HTML
-        let html = `<div class="category-tag">${q.category}</div>`;
-        html += `<div class="question-text">${q.text}</div>`;
-        
-        if (q.clue) {
-            html += `<div class="clue-box">"${q.clue}"</div>`;
-        }
-
-        html += `<div class="options-grid">`;
-        q.options.forEach(opt => {
-            // Escape quotes for onclick
-            let safeOpt = opt.replace(/'/g, "\\'");
-            let safeCorrect = q.correct.replace(/'/g, "\\'");
-            html += `<button class="option-btn" onclick="checkAnswer(this, '${safeOpt}', '${safeCorrect}')">${opt}</button>`;
-        });
-        html += `</div>`;
-        
-        html += `<div id="feedback" class="feedback"></div>`;
-        html += `<button id="next-btn" class="btn-next" onclick="nextQuestion()">Next Question</button>`;
-
-        document.getElementById('question-area').innerHTML = html;
-    }
-
-    let isAnswered = false;
-
-    window.checkAnswer = function(btn, selected, correct) {
-        if (isAnswered) return;
-        isAnswered = true;
-
-        const feedback = document.getElementById('feedback');
-        const nextBtn = document.getElementById('next-btn');
-        const btns = document.querySelectorAll('.option-btn');
-
-        if (selected === correct) {
-            score++;
-            btn.classList.add('correct');
-            feedback.className = 'feedback correct';
-            feedback.innerHTML = `<strong>Correct!</strong>`;
-        } else {
-            btn.classList.add('wrong');
-            feedback.className = 'feedback wrong';
-            feedback.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <br>${correct}`;
-            
-            // Highlight correct button
-            btns.forEach(b => {
-                if (b.innerText === correct) b.classList.add('correct');
-            });
-        }
-
-        feedback.style.display = 'block';
-        nextBtn.style.display = 'block';
-    }
-
-    window.nextQuestion = function() {
-        isAnswered = false;
-        currentQ++;
-        loadQuestion();
-    }
-
-    function endGame() {
-        document.getElementById('quiz-ui').style.display = 'none';
-        document.getElementById('results-ui').style.display = 'block';
-        document.getElementById('final-score').innerText = `${score} / 100`;
-
-        let msg = "";
-        if (score >= 90) msg = "Master Epidemiologist status achieved!";
-        else if (score >= 70) msg = "Great work! You know your history.";
-        else msg = "Good practice. Keep reviewing!";
-        document.getElementById('final-msg').innerText = msg;
-    }
-
-    // Start
-    generateDeck();
-    loadQuestion();
-
-</script>
-
-</body>
-</html>
+        { 
+            name: "Hippocrates", 
+            desc: "First to dismiss supernatural explanations; wrote 'On Airs, Waters, and Places'.",
+            long_desc: "Known as the Father of Medicine, he was the first to attempt to explain disease occurrence from a rational viewpoint rather than a supernatural one. In his essay 'On Airs, Waters, and Places', he suggested that environmental factors such as water quality and climate were key determinants of health.",
+            title: "Father of Medicine"
+        },
+        { 
+            name: "John Graunt", 
+            desc: "Analyzed the 'Bills of Mortality' in London; quantified patterns of birth/death.",
+            long_desc: "A London haberdasher who is considered the founder of demography and vital statistics. He published the 'Natural and Political Observations Made upon the Bills of Mortality' in 1662, where he quantified patterns of birth, death, and disease occurrence, noting sex differences and high infant mortality.",
+            title: "Founder of Demography"
+        },
+        { 
+            name: "James Lind", 
+            desc: "Conducted the first controlled clinical trial (scurvy) on HMS Salisbury.",
+            long_desc: "A Scottish naval surgeon who conducted one of the first known controlled clinical trials in history. On board the HMS Salisbury in 1747, he divided sailors sick with scurvy into groups and treated them with different remedies, proving that citrus fruits (oranges and lemons) were an effective cure.",
+            title: null
+        },
+        { 
+            name: "Edward Jenner", 
+            desc: "Developed the smallpox vaccine using cowpox material.",
+            long_desc: "He observed that milkmaids who had contracted cowpox seemed immune to smallpox. He tested this hypothesis by inoculating a young boy with material from a cowpox sore, effectively creating the world's first vaccine and earning the title Father of Immunology.",
+            title: "Father of Immunology"
+        },
+        { 
+            name: "William Farr", 
+            desc: "Formalized vital statistics system; classified causes of death.",
+            long_desc: "A pioneering medical statistician who set up the modern system for collecting vital statistics. He developed the classification of causes of death (nosology), defined the 'population at risk' for accurate rate calculations, and established the practice of disease surveillance in Great Britain.",
+            title: "Father of Surveillance"
+        },
+        { 
+            name: "John Snow", 
+            desc: "Mapped cholera to the Broad Street pump; removed the handle.",
+            long_desc: "Revered as the Father of Field Epidemiology, he investigated the 1854 cholera outbreak in London. By mapping cases to the Broad Street pump and comparing death rates between households served by different water companies, he proved cholera was waterborne, debunking the miasma theory.",
+            title: "Father of Field Epidemiology"
+        },
+        { 
+            name: "Ignaz Semmelweis", 
+            desc: "Discovered handwashing reduced puerperal (childbed) fever mortality.",
+            long_desc: "A Hungarian physician who discovered that the incidence of puerperal (childbed) fever could be drastically cut by the use of hand disinfection in obstetrical clinics. He observed that doctors were transmitting 'cadaverous particles' from autopsies to delivering mothers.",
+            title: "Savior of Mothers"
+        },
+        { 
+            name: "Florence Nightingale", 
+            desc: "Used polar area diagrams to show sanitation killed more soldiers than battle.",
+            long_desc: "A nurse and statistician who revolutionized hospital sanitation during the Crimean War. She famously used 'polar area diagrams' to visualize data, convincing the government that more soldiers were dying from unsanitary conditions and infectious diseases than from battle wounds.",
+            title: "The Lady with the Lamp"
+        },
+        { 
+            name: "Louis Pasteur", 
+            desc: "Proved Germ Theory; developed rabies and anthrax vaccines.",
+            long_desc: "A French chemist who demonstrated that fermentation and disease were caused by microorganisms, effectively proving the Germ Theory of disease. He also developed the process of pasteurization and created the first vaccines for rabies and anthrax.",
+            title: "Father of Microbiology"
+        },
+        { 
+            name: "Robert Koch", 
+            desc: "Identified agents of TB/Cholera; developed postulates for causation.",
+            long_desc: "A German physician who identified the specific causative agents of tuberculosis, cholera, and anthrax. He is most famous for developing a set of four postulates (criteria) used to establish a causal relationship between a microbe and a specific disease.",
+            title: "Father of Bacteriology"
+        },
+        { 
+            name: "Joseph Lister", 
+            desc: "Pioneer of antiseptic surgery; used carbolic acid.",
+            long_desc: "Inspired by Pasteur's work, he introduced antiseptic techniques to surgery. By using carbolic acid to sterilize surgical instruments and clean wounds, he dramatically reduced the rate of post-operative infection and gangrene.",
+            title: "Father of Antiseptic Surgery"
+        },
+        { 
+            name: "Rudolf Virchow", 
+            desc: "Stated 'Medicine is a social science'; linked disease to poverty.",
+            long_desc: "Known as the Father of Modern Pathology, he investigated a typhus epidemic and concluded that the solution was not medical but social. He famously stated 'Medicine is a social science, and politics is nothing else but medicine on a large scale,' linking disease to poverty and education.",
+            title: "Father of Modern Pathology"
+        },
+        { 
+            name: "Walter Reed", 
+            desc: "Confirmed yellow fever is transmitted by Aedes aegypti mosquitoes.",
+            long_desc: "An American army physician who led the Yellow Fever Commission in Cuba. His experiments confirmed that yellow fever was transmitted by the bite of a specific mosquito species (*Aedes aegypti*) rather than by direct contact or fomites.",
+            title: null
+        },
+        { 
+            name: "Alice Hamilton", 
+            desc: "Pioneer in occupational epidemiology (lead/chemical poisoning).",
+            long_desc: "A trailblazer in occupational health, she conducted 'shoe-leather' epidemiology to investigate industrial poisons. Her work on lead poisoning and other toxic substances in the workplace led to significant safety regulations and labor laws.",
+            title: "Founder of Occupational Medicine"
+        },
+        { 
+            name: "Mary Mallon", 
+            desc: "First identified asymptomatic carrier of typhoid fever in the US.",
+            long_desc: "Better known by her nickname, she was a cook who was the first person in the United States identified as an asymptomatic carrier of the pathogen *Salmonella Typhi*. Her case highlighted the importance of healthy carriers in disease transmission.",
+            title: "Typhoid Mary"
+        },
+        { 
+            name: "George Soper", 
+            desc: "Sanitation engineer who tracked down Mary Mallon.",
+            long_desc: "The sanitation engineer and self-described 'epidemic fighter' who utilized detailed epidemiological investigation to identify Mary Mallon as the common source of typhoid outbreaks in several wealthy New York households.",
+            title: null
+        },
+        { 
+            name: "Joseph Goldberger", 
+            desc: "Proved pellagra was a nutritional deficiency (niacin), not infectious.",
+            long_desc: "He challenged the prevailing view that pellagra was an infectious disease. Through observational studies in Southern orphanages and prisons, he proved that pellagra was a nutritional deficiency disease caused by a lack of niacin (Vitamin B3) and poverty.",
+            title: null
+        },
+        { 
+            name: "Christiaan Eijkman", 
+            desc: "Discovered beriberi was caused by nutritional deficiency (thiamine).",
+            long_desc: "While working in the Dutch East Indies, he observed that chickens fed polished white rice developed symptoms similar to beriberi, while those fed brown rice did not. This led to the discovery of the 'anti-beriberi factor', later known as Vitamin B1 (Thiamine).",
+            title: null
+        },
+        { 
+            name: "Janet Lane-Claypon", 
+            desc: "Pioneered the case-control study (breast cancer); early use of t-test.",
+            long_desc: "A groundbreaking epidemiologist who published a comparative study of breast cancer in 1926, which is considered one of the first modern case-control studies. She was also among the first to use the t-test in health research.",
+            title: null
+        },
+        { 
+            name: "Alexander Fleming", 
+            desc: "Discovered penicillin in 1928, launching the antibiotic era.",
+            long_desc: "A Scottish biologist who, in 1928, returned from holiday to find a mold (*Penicillium notatum*) growing in a petri dish that had killed the surrounding staphylococcus bacteria. This discovery marked the beginning of the antibiotic era.",
+            title: null
+        },
+        { 
+            name: "Edgar Sydenstricker", 
+            desc: "Pioneered morbidity statistics (illness) rather than just mortality.",
+            long_desc: "He argued that mortality statistics alone were insufficient for public health. He pioneered the collection and analysis of morbidity (illness) statistics, conducting the first major community health survey in Hagerstown, Maryland.",
+            title: null
+        },
+        {
