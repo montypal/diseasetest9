@@ -3,177 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Science Olympiad: Disease Detectives History (Text Only)</title>
+    <title>Disease Detectives: Visual History</title>
     <style>
         :root {
             --primary: #2c3e50;
             --secondary: #2980b9;
-            --accent: #16a085;
-            --bg: #f4f6f7;
-            --text: #2c3e50;
-            --card-bg: #ffffff;
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg: #f5f6fa;
         }
 
         body {
-            font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg);
-            color: var(--text);
             margin: 0;
             padding: 20px;
-            line-height: 1.6;
+            color: #333;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: var(--card-bg);
-            padding: 40px;
+            background: white;
+            padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            border-top: 6px solid var(--secondary);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         header {
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
-
-        h1 { color: var(--primary); margin: 0; font-size: 2rem; }
-        .subtitle { color: #7f8c8d; font-size: 1.1rem; margin-top: 5px; }
-
-        /* Progress */
-        .stats-bar {
-            display: flex;
-            justify-content: space-between;
+            border-bottom: 2px solid #eee;
             margin-bottom: 20px;
-            font-weight: bold;
-            color: var(--secondary);
-            font-size: 0.9rem;
-        }
-        .progress-track {
-            background: #eee;
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 30px;
-        }
-        .progress-fill {
-            height: 100%;
-            background: var(--secondary);
-            width: 0%;
-            transition: width 0.3s ease;
+            padding-bottom: 10px;
         }
 
-        /* Question Styles */
-        .question-card {
-            animation: fadeIn 0.4s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        h1 { margin: 0; color: var(--primary); }
+        .score-board { font-size: 1.2rem; font-weight: bold; color: var(--secondary); margin-top: 10px; }
 
-        .type-badge {
+        .question-box {
+            background: #fff;
+            padding: 20px;
+        }
+
+        .q-type {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
+            background: #eee;
+            padding: 5px 10px;
+            border-radius: 4px;
             font-size: 0.8rem;
             font-weight: bold;
+            color: #555;
+            margin-bottom: 10px;
             text-transform: uppercase;
-            margin-bottom: 15px;
-            background: #e8ecef;
-            color: #555;
         }
 
-        .q-text {
-            font-size: 1.25rem;
+        .prompt-text {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
             font-weight: 600;
-            margin-bottom: 25px;
-            color: var(--primary);
         }
 
-        .quote-box {
-            background:#f8f9fa; 
-            padding:20px; 
-            border-left:5px solid var(--secondary); 
-            margin-bottom:25px; 
-            font-style:italic;
-            color: #555;
-        }
-
-        /* Bio Card Styling (Text Only) */
-        .bio-card {
-            background: #f1f2f6;
+        /* Image Styling */
+        .visual-container {
+            display: flex;
+            gap: 20px;
+            background: #f8f9fa;
             padding: 20px;
             border-radius: 8px;
-            border: 1px solid #dcdcdc;
-            margin-bottom: 25px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            align-items: center;
         }
-        .bio-dates { 
-            font-weight: bold; 
-            color: var(--secondary); 
-            font-size: 1.1rem;
-            margin-bottom: 10px; 
-        }
-        .bio-clue {
-            font-size: 1.05rem;
+        
+        .visual-img {
+            width: 150px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #e0e0e0;
         }
 
-        /* Options */
+        .visual-clues {
+            flex: 1;
+        }
+
+        /* Buttons */
         .options-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 12px;
+            gap: 10px;
         }
-        .option-btn {
-            background: #fff;
-            border: 2px solid #e0e0e0;
+
+        .opt-btn {
+            background: white;
+            border: 2px solid #ddd;
+            padding: 15px;
+            text-align: left;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .opt-btn:hover:not(:disabled) {
+            border-color: var(--secondary);
+            background: #f0f8ff;
+        }
+
+        .opt-btn.correct { background: #d5f5e3; border-color: var(--correct); color: #006400; }
+        .opt-btn.wrong { background: #fadbd8; border-color: var(--wrong); color: #8b0000; }
+
+        .feedback {
+            margin-top: 20px;
             padding: 15px;
             border-radius: 8px;
-            text-align: left;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: var(--text);
-        }
-        .option-btn:hover:not(:disabled) {
-            border-color: var(--secondary);
-            background: #f4faff;
-        }
-        .option-btn.correct {
-            background-color: #d4edda;
-            border-color: #155724;
-            color: #155724;
-        }
-        .option-btn.wrong {
-            background-color: #f8d7da;
-            border-color: #721c24;
-            color: #721c24;
-            opacity: 0.7;
-        }
-
-        /* Feedback */
-        .feedback-area {
-            margin-top: 25px;
-            padding: 20px;
-            border-radius: 8px;
             display: none;
         }
-        .feedback-area.correct { background: #e8f5e9; border-left: 5px solid #2ecc71; }
-        .feedback-area.wrong { background: #fce4ec; border-left: 5px solid #e74c3c; }
+        .feedback.correct { background: #e8f8f5; border-left: 5px solid var(--correct); }
+        .feedback.wrong { background: #fdedec; border-left: 5px solid var(--wrong); }
 
-        .btn-next {
+        .next-btn {
             display: none;
-            margin-top: 20px;
-            padding: 12px 30px;
+            float: right;
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 25px;
-            font-size: 1rem;
+            padding: 10px 30px;
+            border-radius: 20px;
             cursor: pointer;
-            float: right;
+            font-size: 1rem;
+            margin-top: 15px;
         }
-        .btn-next:hover { background: #1a252f; }
+
+        /* Mobile */
+        @media(max-width: 600px) {
+            .visual-container { flex-direction: column; text-align: center; }
+        }
     </style>
 </head>
 <body>
@@ -181,78 +147,243 @@
 <div class="container">
     <header>
         <h1>Epidemiology Hall of Fame</h1>
-        <div class="subtitle">Science Olympiad Practice</div>
+        <div class="score-board">Score: <span id="score">0</span> / <span id="total">0</span></div>
     </header>
 
-    <div class="stats-bar">
-        <span id="q-counter">Question 1</span>
-        <span id="score-display">Score: 0</span>
-    </div>
-    <div class="progress-track">
-        <div class="progress-fill" id="progress-fill"></div>
-    </div>
-
-    <div id="quiz-area">
+    <div id="game-area">
         </div>
-
-    <div id="results-area" style="display:none; text-align:center;">
-        <h2 style="color:var(--secondary)">Test Complete!</h2>
-        <p>Your Final Score:</p>
-        <div style="font-size:3rem; font-weight:bold; margin:20px 0;" id="final-score"></div>
-        <p id="final-msg"></p>
-        <button class="btn-next" style="display:inline-block; float:none;" onclick="location.reload()">Restart Test</button>
-    </div>
 </div>
 
 <script>
-    // --- DATABASE OF FIGURES ---
+    // --- ROBUST DATABASE ---
+    // If an image fails to load, the 'onerror' in the HTML will handle it.
     const figures = [
-        { name: "Hippocrates", dates: "c. 460 – c. 370 BC", desc: "First to dismiss supernatural explanations for disease. Authored 'On Airs, Waters, and Places', suggesting environmental factors influence health." },
-        { name: "John Graunt", dates: "1620 – 1674", desc: "Considered the founder of demography. Analyzed the 'Bills of Mortality' in London to quantify patterns of birth, death, and disease." },
-        { name: "James Lind", dates: "1716 – 1794", desc: "Conducted one of the first controlled clinical trials on board the HMS Salisbury, proving citrus fruits cured scurvy." },
-        { name: "Edward Jenner", dates: "1749 – 1823", desc: "Developed the smallpox vaccine using cowpox material; known as the Father of Immunology." },
-        { name: "William Farr", dates: "1807 – 1883", desc: "Developed the modern vital statistics system, classified causes of death, and established the practice of disease surveillance." },
-        { name: "John Snow", dates: "1813 – 1858", desc: "Father of Field Epidemiology. Mapped cholera cases to the Broad Street pump in London (1854), proving waterborne transmission." },
-        { name: "Louis Pasteur", dates: "1822 – 1895", desc: "Proved the Germ Theory of disease, debunking spontaneous generation. Developed vaccines for rabies and anthrax." },
-        { name: "Robert Koch", dates: "1843 – 1910", desc: "Identified causative agents of TB, cholera, and anthrax. Developed a set of postulates to link specific microbes to specific diseases." },
-        { name: "Joseph Goldberger", dates: "1874 – 1929", desc: "Proved pellagra was a nutritional deficiency (niacin) rather than an infectious disease through studies in orphanages and prisons." },
-        { name: "Florence Nightingale", dates: "1820 – 1910", desc: "Used statistical diagrams (polar area charts) to show sanitary conditions killed more soldiers than battle wounds." },
-        { name: "Ignaz Semmelweis", dates: "1818 – 1865", desc: "Discoverer of the importance of handwashing in preventing puerperal (childbed) fever in maternity wards." },
-        { name: "Lady Mary Wortley Montagu", dates: "1689 – 1762", desc: "Introduced variolation (inoculation against smallpox) to Great Britain after observing it in the Ottoman Empire." },
-        { name: "Percivall Pott", dates: "1714 – 1788", desc: "Identified the first occupational cancer; linked scrotal cancer in chimney sweeps to soot exposure." },
-        { name: "Rudolf Virchow", dates: "1821 – 1902", desc: "Father of Modern Pathology. Stated 'Medicine is a social science', linking disease to social conditions like poverty." },
-        { name: "Walter Reed", dates: "1851 – 1902", desc: "Confirmed that yellow fever is transmitted by the Aedes aegypti mosquito, not direct contact." },
-        { name: "Alice Hamilton", dates: "1869 – 1970", desc: "Pioneer in occupational epidemiology; investigated industrial poisoning from lead and mercury." },
-        { name: "Alexander Fleming", dates: "1881 – 1955", desc: "Discovered penicillin in 1928, launching the antibiotic era." },
-        { name: "Austin Bradford Hill", dates: "1897 – 1991", desc: "Formalized the randomized clinical trial (RCT) and developed criteria for determining causal links." },
-        { name: "Richard Doll", dates: "1912 – 2005", desc: "Collaborated with Bradford Hill to statistically prove the link between smoking and lung cancer." },
-        { name: "Janet Lane-Claypon", dates: "1877 – 1967", desc: "Pioneered modern epidemiological methods, including an early case-control study on breast cancer." },
-        { name: "Jonas Salk", dates: "1914 – 1995", desc: "Developed the first effective Inactivated Polio Vaccine (IPV)." },
-        { name: "Albert Sabin", dates: "1906 – 1993", desc: "Developed the Oral Polio Vaccine (OPV), which was easier to administer and key to global eradication." },
-        { name: "Christiaan Eijkman", dates: "1858 – 1930", desc: "Discovered that beriberi was caused by a nutritional deficiency (Vitamin B1) by observing chickens fed polished rice." },
-        { name: "Mary Mallon", dates: "1869 – 1938", desc: "Known as 'Typhoid Mary'; the first identified asymptomatic carrier of typhoid fever in the US." },
-        { name: "Lemuel Shattuck", dates: "1793 – 1859", desc: "Authored the 1850 Report of the Sanitary Commission of Massachusetts, a blueprint for the US public health system." },
-        { name: "Wade Hampton Frost", dates: "1880 – 1938", desc: "First professor of epidemiology in the US; developed 'cohort analysis' and mathematical expressions for disease spread." },
-        { name: "Alexander Langmuir", dates: "1910 – 1993", desc: "Founder of the Epidemic Intelligence Service (EIS) at the CDC; established the concept of disease surveillance." },
-        { name: "Geoffrey Rose", dates: "1926 – 1993", desc: "Proposed the 'population strategy' of prevention; wrote 'Sick Individuals and Sick Populations'." },
-        { name: "D.A. Henderson", dates: "1928 – 2016", desc: "Directed the WHO Global Smallpox Eradication Campaign." },
-        { name: "William H. Foege", dates: "1936 – Present", desc: "Devised the strategy of 'surveillance and containment' (ring vaccination) to eradicate smallpox." }
+        { 
+            name: "Hippocrates", 
+            desc: "First to suggest environmental factors (air, water, place) influence health.", 
+            dates: "c. 460 – c. 370 BC",
+            img: "https://upload.wikimedia.org/wikipedia/commons/f/f2/Bust_of_Hippocrates_%28cropped%29.jpg"
+        },
+        { 
+            name: "John Snow", 
+            desc: "Father of Field Epidemiology. Mapped cholera to the Broad Street pump.", 
+            dates: "1813 – 1858",
+            img: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Dr_John_Snow_by_Barker_BW_1847.jpg"
+        },
+        { 
+            name: "Edward Jenner", 
+            desc: "Father of Immunology. Developed the smallpox vaccine using cowpox.", 
+            dates: "1749 – 1823",
+            img: "https://upload.wikimedia.org/wikipedia/commons/c/cd/Portrait_of_Edward_Jenner%2C_circa_1803_Wellcome_M0004456.jpg"
+        },
+        { 
+            name: "Florence Nightingale", 
+            desc: "Used polar area charts to show sanitation killed more soldiers than battle.", 
+            dates: "1820 – 1910",
+            img: "https://upload.wikimedia.org/wikipedia/commons/1/14/Florence_Nightingale_CDV_by_H_Lenthall.jpg"
+        },
+        { 
+            name: "Louis Pasteur", 
+            desc: "Proved Germ Theory; developed vaccines for rabies and anthrax.", 
+            dates: "1822 – 1895",
+            img: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Albert_Edelfelt_-_Louis_Pasteur_-_Google_Art_Project.jpg"
+        },
+        { 
+            name: "Robert Koch", 
+            desc: "Identified agents of TB and Cholera; created postulates for causation.", 
+            dates: "1843 – 1910",
+            img: "https://upload.wikimedia.org/wikipedia/commons/0/05/Robert_Koch_NIP.jpg"
+        },
+        { 
+            name: "Ignaz Semmelweis", 
+            desc: "Pioneered handwashing to prevent puerperal (childbed) fever.", 
+            dates: "1818 – 1865",
+            img: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Ignaz_Semmelweis_%281818-1865%29_in_1864.jpg"
+        },
+        { 
+            name: "Joseph Goldberger", 
+            desc: "Proved pellagra was a nutritional deficiency (niacin), not infectious.", 
+            dates: "1874 – 1929",
+            img: "https://upload.wikimedia.org/wikipedia/commons/a/ad/Joseph_Goldberger.jpg"
+        },
+        { 
+            name: "Walter Reed", 
+            desc: "Confirmed yellow fever is transmitted by mosquitoes.", 
+            dates: "1851 – 1902",
+            img: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Walter_reed_photo.jpg"
+        },
+        { 
+            name: "Alice Hamilton", 
+            desc: "Founder of occupational epidemiology (lead/chemical poisoning).", 
+            dates: "1869 – 1970",
+            img: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Alice_Hamilton_student_portrait%2C_ca._1893_-_HS10419_%28cropped%29.jpg"
+        },
+        { 
+            name: "Alexander Fleming", 
+            desc: "Discovered penicillin, starting the antibiotic era.", 
+            dates: "1881 – 1955",
+            img: "https://upload.wikimedia.org/wikipedia/commons/b/bf/Alexander_Fleming_at_his_desk_in_a_white_lab_coat_with_penicillin_mold_in_petrie_dishes_around_him.jpg"
+        },
+        { 
+            name: "William Farr", 
+            desc: "Formalized vital statistics and disease surveillance systems.", 
+            dates: "1807 – 1883",
+            img: "https://upload.wikimedia.org/wikipedia/commons/a/a2/William_Farr._Photograph_by_Ernest_Edwards%2C_1867._Wellcome_V0026331.jpg"
+        },
+        { 
+            name: "Jonas Salk", 
+            desc: "Developed the Inactivated Polio Vaccine (IPV).", 
+            dates: "1914 – 1995",
+            img: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Jonas_Salk_1988.jpg"
+        },
+        { 
+            name: "Mary Mallon", 
+            desc: "First identified asymptomatic carrier of typhoid in the US.", 
+            dates: "1869 – 1938",
+            img: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Mary_Mallon_in_hospital_bed.jpg"
+        }
     ];
 
-    // --- UTILS ---
+    // --- GAME ENGINE ---
+    let score = 0;
+    let qCount = 0;
+    const MAX_Q = 15;
+
+    function init() {
+        score = 0;
+        qCount = 0;
+        loadQ();
+    }
+
+    function loadQ() {
+        if (qCount >= MAX_Q) {
+            showResults();
+            return;
+        }
+        
+        qCount++;
+        document.getElementById('total').innerText = qCount;
+        document.getElementById('score').innerText = score;
+
+        // Randomize Type: 0=Desc->Name, 1=Name->Desc, 2=Image->Name
+        const type = Math.floor(Math.random() * 3);
+        const item = figures[Math.floor(Math.random() * figures.length)];
+        const distractors = getDistractors(item);
+        const options = shuffle([item, ...distractors]);
+
+        let html = '';
+
+        if (type === 0) {
+            // Desc -> Name
+            html = `
+                <div class="q-type">Type: Identification</div>
+                <div class="prompt-text">Who is known for the following?</div>
+                <div style="font-style:italic; background:#f4f4f4; padding:15px; border-left:4px solid var(--secondary); margin-bottom:20px;">
+                    "${item.desc}"
+                </div>
+                <div class="options-grid">
+                    ${renderOptions(options, item, 'name')}
+                </div>
+            `;
+        } else if (type === 1) {
+            // Name -> Desc
+            html = `
+                <div class="q-type">Type: Contribution</div>
+                <div class="prompt-text">What was <strong>${item.name}'s</strong> major contribution?</div>
+                <div class="options-grid">
+                    ${renderOptions(options, item, 'desc')}
+                </div>
+            `;
+        } else {
+            // Image -> Name
+            html = `
+                <div class="q-type">Type: Visual ID</div>
+                <div class="prompt-text">Identify this individual:</div>
+                <div class="visual-container">
+                    <img src="${item.img}" 
+                         class="visual-img" 
+                         alt="History Figure" 
+                         onerror="this.onerror=null;this.src='https://placehold.co/150x180?text=${item.name.replace(' ','+')}'">
+                    <div class="visual-clues">
+                        <div><strong>Lived:</strong> ${item.dates}</div>
+                        <div style="margin-top:5px; font-size:0.9em; color:#666;">(Look closely at the image and timeline)</div>
+                    </div>
+                </div>
+                <div class="options-grid">
+                    ${renderOptions(options, item, 'name')}
+                </div>
+            `;
+        }
+
+        html += `<div id="feedback" class="feedback"></div>`;
+        html += `<button id="nextBtn" class="next-btn" onclick="loadQ()">Next Question</button>`;
+
+        document.getElementById('game-area').innerHTML = html;
+    }
+
+    function renderOptions(opts, correctItem, field) {
+        return opts.map(opt => `
+            <button class="opt-btn" onclick="check(this, '${opt[field] === correctItem[field]}', '${correctItem.name}')">
+                ${opt[field]}
+            </button>
+        `).join('');
+    }
+
+    function check(btn, isCorrect, correctName) {
+        // Disable all
+        const btns = document.querySelectorAll('.opt-btn');
+        btns.forEach(b => b.disabled = true);
+
+        const feedback = document.getElementById('feedback');
+        const nextBtn = document.getElementById('nextBtn');
+        isCorrect = (isCorrect === 'true');
+
+        if (isCorrect) {
+            score++;
+            btn.classList.add('correct');
+            feedback.className = 'feedback correct';
+            feedback.innerHTML = "<strong>Correct!</strong> Great job.";
+        } else {
+            btn.classList.add('wrong');
+            feedback.className = 'feedback wrong';
+            feedback.innerHTML = `<strong>Incorrect.</strong> The answer was ${correctName}.`;
+            // Highlight correct
+            btns.forEach(b => {
+                if (b.innerText.includes(correctName) || (b.innerText.length > 20 && correctName === 'check_desc_logic')) {
+                    b.classList.add('correct'); // Simple highlight
+                }
+            });
+        }
+        
+        document.getElementById('score').innerText = score;
+        feedback.style.display = 'block';
+        nextBtn.style.display = 'block';
+    }
+
+    function getDistractors(correctItem) {
+        let pool = figures.filter(f => f.name !== correctItem.name);
+        pool = shuffle(pool);
+        return pool.slice(0, 3);
+    }
+
     function shuffle(array) {
         return array.sort(() => Math.random() - 0.5);
     }
 
-    function getRandomDistractors(correctName, count = 3) {
-        let pool = figures.filter(f => f.name !== correctName).map(f => f.name);
-        return shuffle(pool).slice(0, count);
+    function showResults() {
+        document.getElementById('game-area').innerHTML = `
+            <div style="text-align:center; padding:40px;">
+                <h2 style="color:var(--secondary)">Quiz Complete!</h2>
+                <div style="font-size:3rem; margin:20px 0; color:var(--primary); font-weight:bold;">${score} / ${MAX_Q}</div>
+                <button class="next-btn" style="display:inline-block; float:none;" onclick="init()">Restart</button>
+            </div>
+        `;
     }
 
-    function getRandomContributionDistractors(correctDesc, count = 3) {
-        let pool = figures.filter(f => f.desc !== correctDesc).map(f => f.desc);
-        return shuffle(pool).slice(0, count);
-    }
+    // Start
+    init();
 
-    // --- GAME STATE ---
-    let score = 0;
+</script>
+
+</body>
+</html>
